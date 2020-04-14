@@ -12,19 +12,27 @@ const userInputs = addMovieModal.querySelectorAll("input");
 
 const selectEntryText = document.getElementById("entry-text");
 
+const deleteMovieModal = document.getElementById("delete-modal");
+
 const movies = [];
 
 const toggleBackdrop = () => {
   selectBackdrop.classList.toggle("visible");
 };
 
+const closeModalHandler = () => {
+  addMovieModal.classList.remove("visible");
+};
+
 const showModalHandler = () => {
-  addMovieModal.classList.toggle("visible");
+  addMovieModal.classList.add("visible");
   toggleBackdrop();
 };
 
 const backdropHandler = () => {
-  showModalHandler();
+  closeModalHandler();
+  cancelMovieDeletion();
+  clearModal();
 };
 
 const clearModal = () => {
@@ -42,11 +50,43 @@ const updateUI = () => {
 };
 
 const cancelButtonHandler = () => {
-  showModalHandler();
+  closeModalHandler();
+  toggleBackdrop();
   clearModal();
 };
 
-const showMovieItems = (title, image, rating) => {
+const deleteMovie = (movieId) => {
+  let counter = 0;
+  for (const movie of movies) {
+    if (movie.id === movieId) {
+      break;
+    }
+    counter++;
+  }
+  movies.splice(counter, 1);
+  const showList = document.getElementById("movie-list");
+  showList.children[counter].remove();
+  // showList.removeChild(showList.children[movieId]);
+  cancelMovieDeletion();
+};
+
+const cancelMovieDeletion = () => {
+  toggleBackdrop();
+  deleteMovieModal.classList.remove("visible");
+};
+
+const deleteMovieHandler = (movieId) => {
+  deleteMovieModal.classList.add("visible");
+  toggleBackdrop();
+
+  const cancelButtonClick = deleteMovieModal.querySelector(".btn--passive");
+  const addButtonClick = deleteMovieModal.querySelector(".btn--danger");
+
+  cancelButtonClick.addEventListener("click", cancelMovieDeletion);
+  addButtonClick.addEventListener("click", deleteMovie.bind(null, movieId));
+};
+
+const showMovieItems = (id, title, image, rating) => {
   const newLi = document.createElement("li");
   newLi.className = "movie-element";
   newLi.innerHTML = `
@@ -58,7 +98,7 @@ const showMovieItems = (title, image, rating) => {
     <p>${rating}/5 stars</p>
   </div>
   `;
-
+  newLi.addEventListener("click", deleteMovieHandler.bind(null, id));
   const showList = document.getElementById("movie-list");
   showList.append(newLi);
 };
@@ -79,6 +119,7 @@ const addButtonHandler = () => {
   }
 
   userInput = {
+    id: Math.random().toString(),
     title: title,
     image: imageURL,
     rating: rating,
@@ -87,9 +128,15 @@ const addButtonHandler = () => {
   movies.push(userInput);
   console.log(movies);
   updateUI();
+  closeModalHandler();
+  toggleBackdrop();
   clearModal();
-  showModalHandler();
-  showMovieItems(userInput.title, userInput.image, userInput.rating);
+  showMovieItems(
+    userInput.id,
+    userInput.title,
+    userInput.image,
+    userInput.rating
+  );
 };
 
 selectMovieButton.addEventListener("click", showModalHandler);
