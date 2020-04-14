@@ -68,6 +68,7 @@ const deleteMovie = (movieId) => {
   showList.children[counter].remove();
   // showList.removeChild(showList.children[movieId]);
   cancelMovieDeletion();
+  updateUI();
 };
 
 const cancelMovieDeletion = () => {
@@ -80,7 +81,13 @@ const deleteMovieHandler = (movieId) => {
   toggleBackdrop();
 
   const cancelButtonClick = deleteMovieModal.querySelector(".btn--passive");
-  const addButtonClick = deleteMovieModal.querySelector(".btn--danger");
+  let addButtonClick = deleteMovieModal.querySelector(".btn--danger");
+
+  addButtonClick.replaceWith(addButtonClick.cloneNode(true));
+
+  addButtonClick = deleteMovieModal.querySelector(".btn--danger");
+  
+  cancelButtonClick.removeEventListener("click", cancelMovieDeletion);
 
   cancelButtonClick.addEventListener("click", cancelMovieDeletion);
   addButtonClick.addEventListener("click", deleteMovie.bind(null, movieId));
