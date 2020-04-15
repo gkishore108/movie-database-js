@@ -16,4 +16,4 @@ Concepts Used:
 - WorkAround used for Multiple Event Listeners in List items done using replaceWith() and cloneNode() functions 
   and adding the event listeners on the newly created clone nodes when deleting the items.
 
-<a href="https://github.com/gkishore108/movie-database-js/blob/master/forGif.gif">Movie Databse</a>
+<a href="https://github.com/gkishore108/movie-database-js/blob/master/forGif.gif"><img src="https://github.com/gkishore108/movie-database-js/blob/master/forGif.gif" title="Movie Databse App" /></a>
