@@ -81,12 +81,13 @@ const deleteMovieHandler = (movieId) => {
   toggleBackdrop();
 
   const cancelButtonClick = deleteMovieModal.querySelector(".btn--passive");
+  // Workaround for Multiple Event Listeners in the list item which was causing errors.
   let addButtonClick = deleteMovieModal.querySelector(".btn--danger");
 
   addButtonClick.replaceWith(addButtonClick.cloneNode(true));
 
   addButtonClick = deleteMovieModal.querySelector(".btn--danger");
-  
+
   cancelButtonClick.removeEventListener("click", cancelMovieDeletion);
 
   cancelButtonClick.addEventListener("click", cancelMovieDeletion);
